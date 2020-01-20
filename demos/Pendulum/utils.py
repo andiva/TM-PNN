@@ -19,7 +19,7 @@ def create_PNN(inputDim=2, outputDim=2, order=3):
     model = Sequential()
     model.add(TaylorMap(output_dim = outputDim, order=order,
                         input_shape = (inputDim,),
-                        weights_regularizer=lambda W: dim2_order3(0.05, W),
+                        weights_regularizer=lambda W: dim2_order3(0.009, W),
               ))
 
     model.compile(loss='mean_squared_error', optimizer='adamax')

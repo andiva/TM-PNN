@@ -11,8 +11,8 @@ def plot(ax, Xtrain, Xtest, title, alpha=1, labels = ['train', 'test'], linestyl
     if alpha<1:
         linestyle = '--'
 
-    ax.plot(Xtrain[:, 1], alpha=alpha, linestyle=linestyle, label=labels[0])
-    ax.plot(Xtest[:, 1], alpha=alpha, linestyle=linestyle, label=labels[1])
+    ax.plot(Xtrain[:, 0], alpha=alpha, linestyle=linestyle, label=labels[0])
+    ax.plot(Xtest[:, 0], alpha=alpha, linestyle=linestyle, label=labels[1])
     ax.legend(loc='upper right')
     return
 
@@ -39,7 +39,7 @@ def main():
     X_pnn = iterative_predict(pnn, X0, N)
 
 
-    _, axs = plt.subplots(3,1)
+    _, axs = plt.subplots(3,1,True)
     axs = axs.ravel()
 
     plot(axs[0], X_train, X_test, title='ODE', alpha=1)
@@ -62,6 +62,10 @@ def main():
 
     plt.plot(fixed_lstm[:,0,0])
     plt.plot(fixed_pnn[:,0,0])
+
+    plt.title('Prediction of fixed point')
+    plt.ylabel('φ[rad]')
+    plt.xlabel('Time, sec')
     plt.legend(['LSTM', 'TM-PNN'])
     plt.show()
     return 0
