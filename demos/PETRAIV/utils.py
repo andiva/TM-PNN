@@ -12,7 +12,7 @@ sys.path[0] = str(Path(sys.path[0]).parent.parent)
 from tm_pnn.layers.Taylor_Map import TaylorMap
 from tm_pnn.regularization.symplectic import get_reg_term_2_2 as sympl_reg
 
-from demos.OrbitCorrection.ocelot_lattice import get_transfermaps
+from demos.PETRAIV.ocelot_lattice import get_transfermaps
 
 _misalignements = [-1.3695576896492115e-05, 2.0035806729622158e-05, -8.88409800933373e-06, -1.049521063892591e-05,
                     1.3602575362196903e-05, -4.595850753574459e-06, 1.3659452596163099e-06, -4.360252174124462e-06,
