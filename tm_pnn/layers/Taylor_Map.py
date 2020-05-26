@@ -11,10 +11,13 @@ import tensorflow as tf
 class TaylorMap(Layer):
     def __init__(self, output_dim, order=1,
                  weights_regularizer = None,
+                 initial_weights = None,
                  **kwargs):
         self.output_dim = output_dim
         self.order = order
+        self.initial_weights = initial_weights
         self.weights_regularizer = weights_regularizer
+
         super(TaylorMap, self).__init__(**kwargs)
 
 
@@ -25,13 +28,19 @@ class TaylorMap(Layer):
         self.W = []
         self.nsizes = [nsize]
         for i in range(self.order+1):
-            initial_weight_value = np.zeros((nsize, self.output_dim))
+            if self.initial_weights is None:
+                initial_weight_value = np.zeros((nsize, self.output_dim))
+            else:
+                initial_weight_value = self.initial_weights[i]
             nsize*=input_dim
             self.nsizes.append(nsize)
             self.W.append(K.variable(initial_weight_value))
 
-        self.W[1] = (K.variable(np.eye(N=input_dim, M=self.output_dim)))
+        if self.initial_weights is None:
+            self.W[1] = (K.variable(np.eye(N=input_dim, M=self.output_dim)))
+
         self.trainable_weights = self.W
+
         return
 
 
@@ -47,7 +56,7 @@ class TaylorMap(Layer):
             x_extend_matrix = tf.matmul(x_vectors, xext_vectors, adjoint_a=False, adjoint_b=True)
             tmp = tf.reshape(x_extend_matrix, [-1, self.nsizes[i+1]])
 
-        if self.weights_regularizer:
+        if self.weights_regularizer:                                      #-------------------------------------------------------
             self.add_loss(self.weights_regularizer(self.W))
         return ans
 
